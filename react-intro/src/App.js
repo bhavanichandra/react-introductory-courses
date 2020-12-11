@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.module.css';
 
 import Person from './Person/Person';
 class App extends Component {
@@ -33,7 +33,7 @@ class App extends Component {
 
 	render() {
 		return (
-			<div className='App'>
+			<div className={classes.App}>
 				<h1>Hello, This is my first react app</h1>
 				<button onClick={() => this.switchNameHandler('Soundarya')}>
 					Switch Name

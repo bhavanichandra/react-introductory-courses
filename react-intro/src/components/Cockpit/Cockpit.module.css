@@ -1,8 +1,4 @@
-.App {
-	text-align: center;
-}
-
-.Button {
+.Cockpit button {
 	border: 2px solid #2e41eb;
 	background-color: #09cf83;
 	color: white;
@@ -11,12 +7,11 @@
 	cursor: pointer;
 }
 
-.Button:hover,
-.Button:active {
+.Cockpit button:hover,
+.Cockpit button:active {
 	border: 2px solid #2e41eb;
 	background-color: #ff4848;
 	border-radius: 8px;
 	padding: 8px;
 	cursor: pointer;
 }
-

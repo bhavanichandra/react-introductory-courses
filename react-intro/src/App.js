@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import classes from './App.module.css';
 
 import Person from './Person/Person';
@@ -8,7 +10,8 @@ class App extends Component {
 			{ name: 'Bhavani', age: 25 },
 			{ name: 'Ravi', age: 23 },
 			{ name: 'Aishwarya', age: 23 }
-		]
+		],
+		showPersons: false
 	};
 
 	switchNameHandler = (newName) => {
@@ -31,30 +34,29 @@ class App extends Component {
 		});
 	};
 
+	togglePersonsHandler = () => {
+		const doesShow = this.state.showPersons;
+		this.setState({ showPersons: !doesShow });
+	};
+
 	render() {
+		let persons = null;
+		if (this.state.showPersons) {
+			persons = (
+				<div>
+					{this.state.persons.map((each) => {
+						return <Person name={each.name} age={each.age} key={uuid()} />;
+					})}
+				</div>
+			);
+		}
 		return (
 			<div className={classes.App}>
 				<h1>Hello, This is my first react app</h1>
-				<button onClick={() => this.switchNameHandler('Soundarya')}>
-					Switch Name
+				<button onClick={this.togglePersonsHandler}>
+					Click to Show Persons
 				</button>
-				<div>
-					<Person
-						name={this.state.persons[0].name}
-						age={this.state.persons[0].age}
-					/>
-					<Person
-						click={this.switchNameHandler.bind(this, 'Varshini')}
-						name={this.state.persons[1].name}
-						age={this.state.persons[1].age}
-						changed={this.nameChangedHandler}>
-						My Hobbies: Racing
-					</Person>
-					<Person
-						name={this.state.persons[2].name}
-						age={this.state.persons[2].age}
-					/>
-				</div>
+				{persons}
 			</div>
 		);
 	}

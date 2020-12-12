@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import classes from './Cockpit.module.css';
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+	useEffect(() => {
+		console.log('[Cockpit.js] useEffect');
+		const timer = setTimeout(() => {
+			console.log('[Cockpit.js] Saved data to cloud!');
+		}, 1000);
+		return () => {
+			console.log('[Cockpit.js] cleanup work!');
+			clearTimeout(timer);
+		};
+	}, []);
+
+	useEffect(() => {
+		console.log('[Cockpit.js] 2nd useEffect');
+		return () => {
+			console.log('[Cockpit.js] cleanup work! 2nd useEffect');
+		};
+	});
+
 	return (
 		<div className={classes.Cockpit}>
 			<h1>Hello, This is my first react app</h1>
@@ -13,4 +31,4 @@ const cockpit = (props) => {
 	);
 };
 
-export default cockpit;
+export default React.memo(Cockpit);

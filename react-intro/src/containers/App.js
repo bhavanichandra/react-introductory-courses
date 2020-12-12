@@ -5,15 +5,42 @@ import classes from './App.module.css';
 
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import Aux from '../hoc/Auxilary';
+import withClass from '../hoc/withClass';
+
 class App extends Component {
-	state = {
-		persons: [
-			{ id: 'JuPquOYK4b', name: 'Bhavani', age: 25 },
-			{ id: 'ThiUlIPtKF', name: 'Ravi', age: 23 },
-			{ id: 'oQkh4By--U', name: 'Aishwarya', age: 23 }
-		],
-		showPersons: false
-	};
+	constructor(props) {
+		super(props);
+		console.log('[App.js] constrctor');
+		this.state = {
+			persons: [
+				{ id: 'JuPquOYK4b', name: 'Bhavani', age: 25 },
+				{ id: 'ThiUlIPtKF', name: 'Ravi', age: 23 },
+				{ id: 'oQkh4By--U', name: 'Aishwarya', age: 23 }
+			],
+			showPersons: false,
+			showCockpit: true,
+			changeCounter: 0
+		};
+	}
+
+	static getDerivedStateFromProps(props, state) {
+		console.log('[App.js] getDerivedStateFromProps', props);
+		return state;
+	}
+
+	componentDidMount() {
+		console.log('[App.js] componentDidMount');
+	}
+
+	shouldComponentUpdate(nextProps, nextState) {
+		console.log('[App.js] shouldComponentUpdate');
+		return true;
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		console.log('[App.js] componentDidUpdate');
+	}
 
 	nameChangedHandler = (event, personId) => {
 		const personIndex = this.state.persons.findIndex(
@@ -25,7 +52,12 @@ class App extends Component {
 		person.name = event.target.value;
 		const persons = [...this.state.persons];
 		persons[personIndex] = person;
-		this.setState({ persons: persons });
+		this.setState((prevState, props) => {
+			return {
+				persons: persons,
+				changeCounter: prevState.changeCounter + 1
+			};
+		});
 	};
 
 	deletePersonHandler = (index) => {
@@ -40,6 +72,7 @@ class App extends Component {
 	};
 
 	render() {
+		console.log('[App.js] rendering...');
 		let persons = null;
 		if (this.state.showPersons) {
 			persons = (
@@ -53,12 +86,20 @@ class App extends Component {
 			);
 		}
 		return (
-			<div className={classes.App}>
-				<Cockpit clicked={this.togglePersonsHandler} />
+			<Aux>
+				<button
+					onClick={() => {
+						this.setState({ showCockpit: false });
+					}}>
+					Remove Cockpit
+				</button>
+				{this.state.showCockpit ? (
+					<Cockpit clicked={this.togglePersonsHandler} />
+				) : null}
 				{persons}
-			</div>
+			</Aux>
 		);
 	}
 }
 
-export default App;
+export default withClass(App, classes.App);

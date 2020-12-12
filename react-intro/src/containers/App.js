@@ -7,6 +7,7 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import Aux from '../hoc/Auxilary';
 import withClass from '../hoc/withClass';
+import Context from '../context/context';
 
 class App extends Component {
 	constructor(props) {
@@ -20,7 +21,8 @@ class App extends Component {
 			],
 			showPersons: false,
 			showCockpit: true,
-			changeCounter: 0
+			changeCounter: 0,
+			authenticated: false
 		};
 	}
 
@@ -71,6 +73,10 @@ class App extends Component {
 		this.setState({ showPersons: !doesShow });
 	};
 
+	loginHandler = () => {
+		this.setState({ authenticated: true });
+	};
+
 	render() {
 		console.log('[App.js] rendering...');
 		let persons = null;
@@ -93,10 +99,19 @@ class App extends Component {
 					}}>
 					Remove Cockpit
 				</button>
-				{this.state.showCockpit ? (
-					<Cockpit clicked={this.togglePersonsHandler} />
-				) : null}
-				{persons}
+				<Context.Provider
+					value={{
+						autheticated: this.state.authenticated,
+						login: this.loginHandler
+					}}>
+					{this.state.showCockpit ? (
+						<Cockpit
+							clicked={this.togglePersonsHandler}
+							login={this.loginHandler}
+						/>
+					) : null}
+					{persons}
+				</Context.Provider>
 			</Aux>
 		);
 	}

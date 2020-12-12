@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 
 import classes from './Cockpit.module.css';
+import Context from '../../context/context';
 
 const Cockpit = (props) => {
+	const toggleButtonRef = useRef(null);
+	const authContext = useContext(Context);
+
 	useEffect(() => {
 		console.log('[Cockpit.js] useEffect');
 		const timer = setTimeout(() => {
+			toggleButtonRef.current.click();
 			console.log('[Cockpit.js] Saved data to cloud!');
 		}, 1000);
 		return () => {
@@ -24,9 +29,13 @@ const Cockpit = (props) => {
 	return (
 		<div className={classes.Cockpit}>
 			<h1>Hello, This is my first react app</h1>
-			<button onClick={props.clicked} className={classes.Button}>
+			<button
+				ref={toggleButtonRef}
+				onClick={props.clicked}
+				className={classes.Button}>
 				Click to Show Persons
 			</button>
+			<button onClick={authContext.login}>Login</button>
 		</div>
 	);
 };
